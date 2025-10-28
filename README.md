@@ -19,30 +19,105 @@ g++ main.cpp -o groceryTracker.exe
 
 ---
 
+## What I did particularly well
+I demonstrated strong organizational skills by structuring the code with clear separation of concerns—the `GroceryTracker` class encapsulates all data and file I/O logic, while the main function handles user interaction. This modular design makes it straightforward to test individual components and extend functionality without touching the menu flow.
+
+## Where the code could be enhanced
+1. **Input validation**: The program currently trusts the input file format. Adding checks for empty lines, special characters, or malformed entries would make it more robust.
+2. **Performance**: Using an unordered_map (hash table) instead of map would speed up lookups for very large datasets.
+3. **User experience**: Implementing a case-insensitive search so "Apple" and "apple" are treated identically would improve usability.
+
+These enhancements would increase reliability, speed, and ease-of-use without fundamentally changing the existing architecture.
+
+## Most challenging parts and how they were overcome
+The histogram generation was initially tricky because it required converting frequency values into a visual representation. I overcame this by breaking the problem into smaller pieces:
+1. Iterate through the map
+2. Print the item name
+3. Use a loop to print asterisks equal to the frequency count
+
+By isolating each step and testing incrementally, I was able to debug effectively and ensure the output aligned with user expectations.
+
+## Tools / resources used
+- **C++ Standard Library**: `<map>`, `<fstream>`, `<iostream>`, `<string>` for data structures, file I/O, and console interaction.
+- **MinGW-w64 (g++)**: Compiler for building the executable on Windows.
+- **VS Code**: Editor for writing and organizing the code.
+- **Official C++ documentation**: Reference for map operations and string manipulation functions.
+
+## Transferable skills
+- **File I/O**: Reading from and writing to text files is a core skill applicable to data processing tasks in any language.
+- **Data structures**: Understanding when to use a map (ordered key-value pairs) versus other containers is fundamental to efficient software design.
+- **User interface design**: Building a simple menu-driven console application teaches the basics of user interaction and input validation, which scale to more complex GUI or web-based systems.
+- **Incremental development**: Writing and testing small pieces of functionality before integrating them is a best practice in any project.
+
+## Maintainability, readability, adaptability
+- **Naming conventions**: Variable and function names are descriptive (`loadItems`, `frequencyMap`, `writeBackupFile`) so another developer can quickly grasp their purpose.
+- **Comments**: Inline comments explain non-obvious logic, such as why we convert item names to lowercase.
+- **Class encapsulation**: Placing all grocery-tracking logic inside `GroceryTracker` means changes to the data structure or file format only require updates in one place.
+- **Modular functions**: Each method in `GroceryTracker` has a single responsibility (e.g., `getFrequency`, `printFrequencies`), making it easy to modify or replace individual features without affecting the rest of the program.
+
+Future developers can extend this code by adding new menu options or changing the data source (e.g., reading from a database) with minimal disruption to existing functionality.
+
+## Next steps (optional)
+- Add a graphical user interface (GUI) using a library like Qt or wxWidgets.
+- Integrate with a database (SQLite or MySQL) to store and query item frequencies over multiple sessions.
+- Implement unit tests using a framework like Google Test to ensure each function behaves correctly.
+
+---
+
+# Sprint Review and Retrospective Reflection
+
+This reflection captures key insights from applying agile and Scrum practices in a recent software development project. Working in an iterative, collaborative environment highlighted the value of regular feedback loops, adaptive planning, and continuous improvement.
+
+## Key Aspects
+- **Sprint Planning**: Breaking work into manageable increments helped the team maintain focus and deliver functional software at the end of each sprint.
+- **Daily Stand-ups**: Brief daily check-ins kept everyone aligned on progress and surface blockers early.
+- **Sprint Review**: Demonstrating completed work to stakeholders ensured we were building the right features and provided opportunities for course correction.
+- **Sprint Retrospective**: Reflecting on what went well and what could improve fostered a culture of continuous learning and adaptation.
+
+These practices promoted transparency, accountability, and collaboration—skills that are directly transferable to future projects in any domain.
+
+**Artifact**: [Sprint Review and Retrospective Document](https://github.com/D592D/Portfolio/blob/main/Sprint%20Review%20and%20Retrospective.docx)
+
+---
+
 ## The Gaming Room Client - Software Design Document
 
 ### Client Overview and Software Requirements
+The Gaming Room is a client that requested the expansion of their existing Android game, *Draw It or Lose It*, into a multi-platform web-based application. The game is a team-based drawing competition where players guess what is being drawn within a time limit. The software requirements included:
+- Supporting multiple teams and players
+- Ensuring unique game and team names
+- Providing a web-based interface accessible on various devices and operating systems
+- Maintaining a single instance of the game in memory using the Singleton pattern
 
-The Gaming Room was a client seeking to expand their existing Android game, "Draw It or Lose It," into a multi-platform web-based application. They wanted a software solution that would allow the game to run seamlessly across multiple operating systems and devices, including Windows, Mac, Linux, iOS, and Android platforms. The game is a puzzle-based competition where teams compete to guess what is being drawn from a rendering library of stock images, with only one instance of the game allowed to exist in memory at any given time. The client required a robust architecture that could support multiple teams and players while maintaining unique identifiers for each entity and ensuring that game instances were properly managed across distributed environments.
+### Design Constraints and System Architecture Approach
+The design had to account for scalability, cross-platform compatibility, and efficient resource management. I recommended a client-server architecture with a RESTful API, allowing the web client to communicate with a central server that manages game state, player sessions, and team coordination. This approach decouples the front end from the back end, enabling independent updates and easier testing. The Singleton pattern was applied to ensure only one game instance existed, preventing conflicts and simplifying state management.
 
-### Development Process and Documentation Excellence
+### What I Did Particularly Well in This Documentation
+I provided a clear comparison of operating platforms (Windows, Linux, macOS, mobile) and their strengths for hosting the application. By presenting trade-offs in a structured table and explaining the rationale for recommendations, I made it easier for stakeholders to understand technical decisions. I also ensured that UML diagrams and code examples illustrated key design patterns concretely, bridging the gap between abstract concepts and practical implementation.
 
-In developing the documentation for The Gaming Room, I excelled at creating a comprehensive evaluation of different operating systems and their respective characteristics, providing the client with clear, actionable insights for platform selection. The detailed comparison tables and thorough analysis of server-side, client-side, and development considerations demonstrated a methodical approach to technical communication. Additionally, I effectively articulated the design constraints and system architecture using UML diagrams and clear explanations, making complex technical concepts accessible to both technical team members and non-technical stakeholders.
+### How Working Through This Design Document Helped Develop the Code
+The design document served as a blueprint, clarifying requirements and architectural decisions before writing code. By identifying design patterns (Singleton, Iterator) and planning the class structure in advance, I avoided rework and ensured that the codebase was modular and maintainable. The document also highlighted potential challenges (e.g., managing concurrent player actions), prompting me to research and integrate appropriate solutions early in the development process.
 
-Working through the design document proved invaluable when developing the actual code implementation. The process of thoroughly analyzing requirements, constraints, and architectural patterns before writing a single line of code provided a clear roadmap for development. By documenting the singleton pattern for game instances, the iterator pattern for managing collections, and the overall domain model structure, I created a reference point that eliminated ambiguity during coding. This upfront planning reduced development time significantly, as design decisions had already been vetted and documented, allowing for focused implementation rather than constant architectural pivoting.
+### Area for Revision and Improvement Strategy
+If I could revise one part, I would expand the section on security considerations. While the document addresses authentication and data validation, it could benefit from a more detailed discussion of encryption (TLS/SSL for data in transit), secure session management, and protection against common web vulnerabilities (e.g., SQL injection, cross-site scripting). To improve this, I would:
+- Include specific security frameworks and libraries (e.g., OAuth 2.0, bcrypt for password hashing)
+- Provide code snippets demonstrating secure coding practices
+- Reference industry standards (OWASP Top Ten) to ensure comprehensive coverage
 
-### Areas for Improvement and Revision
+### Interpreting User Needs and Their Importance
+I interpreted the user's needs by analyzing the client's goals (expand to multiple platforms, support team-based gameplay, ensure unique identifiers) and translating them into functional and non-functional requirements. For example, the requirement for unique game and team names led to the design of a name-checking mechanism in the game service. Understanding user needs is crucial because software that doesn't align with user expectations or workflows will fail to deliver value, regardless of technical sophistication. By prioritizing usability, scalability, and reliability, I ensured the design would meet both current and future needs.
 
-If I could revise one aspect of the documentation, I would enhance the recommendations section with more specific implementation timelines and resource allocation estimates. While the technical recommendations were sound, adding projected development sprints, testing phases, and deployment milestones would provide The Gaming Room with better project planning capabilities. I would also include more specific cost-benefit analyses for each platform option, incorporating not just development costs but also maintenance overhead, scalability expenses, and potential revenue impacts. This additional financial context would strengthen the decision-making framework for the client.
+### Approach to Designing Software and Future Strategies
+My approach involved:
+1. **Requirements Gathering**: Understanding the client's vision and constraints through careful reading of the project brief.
+2. **Research**: Comparing operating systems, development frameworks, and design patterns to identify the best fit.
+3. **Modeling**: Creating UML diagrams to visualize relationships between classes and components.
+4. **Iterative Refinement**: Revisiting design decisions as new insights emerged during documentation.
 
-### User Needs Analysis and Implementation
+In the future, I would incorporate the following techniques:
+- **Prototyping**: Building a minimal viable product (MVP) early to validate design assumptions and gather user feedback.
+- **User Stories and Use Cases**: Writing detailed scenarios to ensure all user interactions are accounted for.
+- **Threat Modeling**: Systematically identifying security risks and mitigation strategies during the design phase.
+- **Design Reviews**: Collaborating with peers to critique and improve the design before implementation.
 
-Interpreting the user's needs required careful consideration of both the end-users (game players) and the client (The Gaming Room). For players, the design prioritized cross-platform compatibility, responsive performance, and seamless gameplay experience regardless of device. This translated into architectural decisions favoring RESTful APIs, stateless server design, and responsive web technologies. For The Gaming Room as a client, business needs like scalability, security, and maintainability drove the recommendation of Linux-based servers, cloud deployment strategies, and modern development frameworks.
-
-Considering user needs is paramount in software design because software that doesn't serve its intended audience effectively is ultimately a failure, regardless of technical sophistication. User-centered design ensures that technical decisions align with real-world usage patterns, business objectives, and user expectations. By keeping both player experience and client business goals at the forefront, the design balanced performance requirements with cost considerations, creating a solution that was both technically sound and commercially viable.
-
-### Software Design Approach and Future Strategies
-
-My approach to designing this software followed a structured methodology beginning with requirements gathering and stakeholder analysis, progressing through domain modeling and architectural pattern selection, and culminating in platform evaluation and technology recommendations. I employed techniques such as UML modeling to visualize relationships between entities, comparative analysis matrices to evaluate platform options objectively, and design pattern identification to solve common architectural challenges elegantly.
-
-For future software design projects, I would continue using these foundational techniques while incorporating additional strategies such as rapid prototyping to validate architectural decisions early, stakeholder workshops to ensure requirements capture completeness, and risk assessment matrices to identify potential technical and business challenges proactively. I would also emphasize threat modeling earlier in the design process to ensure security considerations are baked into the architecture from the beginning rather than added as an afterthought. Additionally, incorporating performance benchmarking criteria during the design phase would provide measurable targets for implementation success, creating a feedback loop between design decisions and actual system performance.
+These strategies would help ensure that future projects are not only technically sound but also aligned with user needs and industry best practices.
