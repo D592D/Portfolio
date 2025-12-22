@@ -121,3 +121,17 @@ In the future, I would incorporate the following techniques:
 - **Design Reviews**: Collaborating with peers to critique and improve the design before implementation.
 
 These strategies would help ensure that future projects are not only technically sound but also aligned with user needs and industry best practices.
+
+---
+
+## CS-255 DriverPass Project Reflection
+
+The DriverPass project was for a small business client that wanted an online system to help students prepare for their driving exams. The client needed a web-based application where students could purchase packages, take practice tests, schedule and manage driving lessons, and where administrators and instructors could manage users, schedules, and test materials.
+
+One thing I did particularly well was organizing the requirements into clear use cases and mapping those directly into my UML diagrams. This helped maintain a strong connection between the business goals and the technical design and made it easier to verify that each requirement was represented in the system model.
+
+If I could revise one part of my work, I would refine the maintenance and error-handling aspects of the design. I would add more detailed flows for edge cases—such as payment failures, scheduling conflicts, or system downtime—and make sure those scenarios are fully represented in both the documentation and the diagrams.
+
+When interpreting the user’s needs, I focused on each role in the system (students, administrators, instructors, and IT staff) and what they needed to accomplish. I used the problem statement and use-case narratives to identify the key actions and data each role interacts with and then reflected those in the system design. Considering user needs is essential because a system that doesn’t align with real workflows will be confusing, underused, or misused, even if it’s technically correct.
+
+In designing software, I prefer to start from the outside in: clarify the problem, gather and organize requirements, and then create visual models such as use-case, activity, and class diagrams before thinking about implementation details. In the future, I plan to continue using techniques like structured requirements analysis, UML modeling, and iterative refinement with feedback from stakeholders. These strategies help ensure the final system is both technically sound and truly aligned with how users need to work.
