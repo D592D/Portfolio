@@ -135,3 +135,23 @@ If I could revise one part of my work, I would refine the maintenance and error-
 When interpreting the user’s needs, I focused on each role in the system (students, administrators, instructors, and IT staff) and what they needed to accomplish. I used the problem statement and use-case narratives to identify the key actions and data each role interacts with and then reflected those in the system design. Considering user needs is essential because a system that doesn’t align with real workflows will be confusing, underused, or misused, even if it’s technically correct.
 
 In designing software, I prefer to start from the outside in: clarify the problem, gather and organize requirements, and then create visual models such as use-case, activity, and class diagrams before thinking about implementation details. In the future, I plan to continue using techniques like structured requirements analysis, UML modeling, and iterative refinement with feedback from stakeholders. These strategies help ensure the final system is both technically sound and truly aligned with how users need to work.
+
+
+---
+
+# CS-300 ABCU Advising Assistance Program
+
+## What Was the Problem?
+The projects in this course centered on building a course advising tool for ABCU, an academic advising department. The program needed to load course data from a CSV file, validate prerequisites, print all Computer Science courses in alphanumeric order, and allow advisors to look up a specific course and display its prerequisites. The core challenge was choosing the right data structure to meet both requirements efficiently as the course catalog scales.
+
+## How Did I Approach the Problem?
+I approached the problem by systematically evaluating three data structures — vector, hash table, and binary search tree (BST) — before writing any production code. For each structure, I wrote pseudocode and performed a Big O runtime analysis for loading data, printing sorted courses, and searching for a specific course. Understanding data structures is essential because the choice directly determines how well a program performs at scale. I selected the BST because its in-order traversal inherently visits nodes in alphanumeric order, producing a sorted course list in O(n) time without a separate sort step, while also providing O(log n) average-case search by course ID.
+
+## How Did I Overcome Roadblocks?
+One significant challenge was prerequisite validation during file loading — I needed to confirm that every prerequisite listed for a course actually existed as a valid course in the dataset. I solved this with a two-pass approach: the first pass collected all course IDs into an unordered set, and the second pass validated and inserted each course into the BST. Another challenge was handling malformed or inconsistent CSV input. I added a `trim()` helper and `toUpperCase()` normalization so that spacing inconsistencies and case differences in the input file would not cause lookup failures. Breaking each problem into a smaller, testable piece made debugging straightforward.
+
+## How Has This Expanded My Approach to Designing Software?
+This project reinforced the practice of designing before coding. Writing pseudocode and runtime tables for all three data structures forced me to think about trade-offs — memory overhead, worst-case degradation, and natural ordering — before committing to an implementation. I now treat Big O complexity as a first-class design constraint rather than something to analyze after the fact. This approach scales directly to real-world software engineering, where architectural decisions made early have the greatest impact on long-term performance and maintainability.
+
+## How Has This Evolved the Way I Write Maintainable, Readable, and Adaptable Programs?
+Working on `projecttwo.cpp` deepened my commitment to clean separation of concerns. The `BinarySearchTree` class encapsulates all tree logic — insertion, search, traversal, and memory cleanup — while standalone application functions (`loadCourses`, `printCourseInformation`) handle user-facing behavior. This means changing the underlying data structure or extending the menu would require minimal edits in isolated locations. Descriptive naming (`addNode`, `inOrder`, `courseId`), inline comments explaining non-obvious logic, and consistent input normalization make the codebase approachable for any future developer, including my future self.
