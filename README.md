@@ -155,3 +155,59 @@ This project reinforced the practice of designing before coding. Writing pseudoc
 
 ## How Has This Evolved the Way I Write Maintainable, Readable, and Adaptable Programs?
 Working on `projecttwo.cpp` deepened my commitment to clean separation of concerns. The `BinarySearchTree` class encapsulates all tree logic — insertion, search, traversal, and memory cleanup — while standalone application functions (`loadCourses`, `printCourseInformation`) handle user-facing behavior. This means changing the underlying data structure or extending the menu would require minimal edits in isolated locations. Descriptive naming (`addNode`, `inOrder`, `courseId`), inline comments explaining non-obvious logic, and consistent input normalization make the codebase approachable for any future developer, including my future self.
+
+---
+
+# CS-370: Current and Emerging Trends in Computer Science — Portfolio Artifact
+
+## Project Overview: Deep Q-Learning Pirate Intelligent Agent
+This repository contains my Project Two artifact (`TreasureHuntGame_starterCode.ipynb`), which implements a Deep Q-Network (DQN) intelligent agent in Python using TensorFlow and Keras. The agent—a pirate navigating an $8 \times 8$ grid maze—learns to locate a treasure chest in the bottom-right corner (`(7, 7)`) from any valid starting cell while maximizing cumulative reward and avoiding obstacles.
+
+---
+
+## Design Defense: Human vs. Machine Intelligence & Target Networks
+
+### Global Viewers vs. Local Learners
+When confronted with a pathfinding problem like navigating a maze to find a treasure, human beings and machine learning agents employ fundamentally different problem-solving paradigms:
+* **The Human (Global Viewer):** Approaches the maze using a top-down, global perspective. Upon looking at the grid, a human visually scans the entire environment simultaneously, immediately identifying the starting position at the top-left and the treasure at the bottom-right, naturally using spatial heuristics to trace paths or prune dead ends.
+* **The Pirate Agent (Local Learner):** Approaches the maze from a bottom-up, local perspective. Initially possessing no global understanding of the map layout, the agent receives only the environment state as a flattened 64-element array and discovers the maze layout through empirical trial and error, evaluating immediate numerical rewards or penalties via the Bellman equation.
+
+### Stabilizing Training: The "Dog Chasing Its Tail" Metaphor
+Reinforcement learning models often suffer from catastrophic forgetting and algorithmic instability when trained on consecutive, highly correlated frames. To prevent this, the architecture uses **Experience Replay** (sampling random mini-batches of 32 episodes from a rolling memory buffer to break temporal correlations) and a **Target Network**.
+
+A cloned `target_model` generates target Q-values for Mean Squared Error (MSE) loss calculation, with its weights frozen and updated only every 50 epochs (`target_update_freq`). If the agent used a single network to both predict current values and set targets, it would be akin to **a dog chasing its own tail**—the target would constantly shift with every step. The frozen target network provides a fixed, stable mathematical target for the Adam optimizer to aim at, ensuring smooth and reliable convergence.
+
+---
+
+## Work Completed: Provided Starter Code vs. Custom Implementation
+
+**Provided Code & Architecture:**
+* **`TreasureMaze.py` & Maze Environment:** Provided the $8 \times 8$ matrix representation of the environment (`1.0` for free cells, `0.0` for walls), state observation logic (`observe()`), valid action checks (`valid_actions()`), and the reward structure (`act()`), which penalizes step delays (`-0.04`), wall collisions, and revisits while rewarding treasure discovery (`1.0`).
+* **`GameExperience.py`:** Provided the experience replay buffer class responsible for storing transition tuples (`remember()`), predicting Q-values (`predict()`), and sampling random mini-batches (`get_data()`) to compute Bellman target values using a separate target network.
+* **Notebook Scaffolding & Neural Network (`TreasureHuntGame_starterCode.ipynb`):** Provided the `build_model()` function (a 3-layer `Sequential` Dense network with `PReLU` activations compiled with Adam and Mean Squared Error loss), the `@tf.function`-decorated `train_step()` gradient tape function, and validation helpers (`play_game()`, `completion_check()`, and `show()`).
+
+**Code Created Myself:**
+* **Deep Q-Learning Training Loop (`qtrain()`):** I engineered the core reinforcement learning training loop inside `qtrain()` to connect the environment, experience replay memory, online Q-network, and target Q-network:
+  1. **Episode Initialization:** Reset the environment at a randomly selected free cell (`random.choice(qmaze.free_cells)`) at the start of each epoch and captured the initial 64-element state vector via `qmaze.observe()`.
+  2. **Epsilon-Greedy Action Selection:** Balanced exploration and exploitation by comparing a uniform random draw (`np.random.rand()`) against `epsilon`. During exploration, the agent selects randomly from `qmaze.valid_actions()`; during exploitation, it queries `experience.predict(previous_envstate)` and selects `np.argmax(q_values)`.
+  3. **State Transition & Win Tracking:** Executed actions via `qmaze.act(action)`, tracked step counts (`n_episodes`), converted terminal statuses (`'win'` or `'lose'`) into boolean flags, and recorded binary outcomes in `win_history`.
+  4. **Experience Replay & Gradient Updates:** Packaged each transition `[previous_envstate, action, reward, envstate, game_over]` into `experience.remember()`, sampled mini-batches via `experience.get_data(batch_size=data_size)`, and updated network weights using `train_step(inputs, targets)`.
+  5. **Target Network Synchronization & Convergence:** Synchronized `target_model` weights with the online `model` every `target_update_freq` (50) epochs, decayed `epsilon`, and verified full-maze mastery at **Epoch 236** (converging with **172 wins** across **15,954 step-level transitions** in **305.8 seconds**) via `completion_check()`.
+
+---
+
+## Connecting Course Learning to Computer Science
+
+### What Computer Scientists Do and Why It Matters
+Computer scientists design computational abstractions, algorithms, and autonomous systems that transform raw data and mathematical theory into reliable decision-making tools. In the context of artificial intelligence and emerging trends, our work moves beyond writing static, rule-based instructions (`if-else` trees) to architecting systems capable of generalizing across complex, dynamic state spaces. This matters because modern infrastructure—from healthcare diagnostics and autonomous navigation to cyber defense—relies on algorithms that can adapt to uncertainty safely, efficiently, and predictably.
+
+### How I Approach a Problem as a Computer Scientist
+Approaching a problem as a computer scientist requires decomposing an abstract goal into formal mathematical states, constraints, and verifiable feedback loops:
+1. **Formulate the State-Action-Reward Space:** Define how the problem is represented mathematically (modeling grid environments as Markov Decision Processes with bounded states, valid actions, and shaped rewards).
+2. **Audit Interfaces and Data Contracts:** Inspect underlying implementations directly (verifying how `GameExperience.get_data()` expects the `batch_size` keyword argument and how `target_model` weights stabilize temporal-difference targets).
+3. **Iterate Empirically and Validate Rigorously:** Rely on systematic testing, edge-case verification, and concrete telemetry (loss curves, epoch convergence, step counts, and full-board completion checks) to prove a system works as intended.
+
+### Ethical Responsibilities to the End User and the Organization
+Building intelligent systems carries dual ethical obligations:
+* **To the End User:** Responsible for protecting user privacy, autonomy, and fairness. Integrating frameworks like **Ethics by Design**, **Responsible Research and Innovation (RRI)**, and **GDPR data minimization** ensures models avoid ingesting unnecessary personal data, guard against hidden demographic bias, and maintain clear human boundaries.
+* **To the Organization:** Responsible for technical transparency, robustness, and honest reporting of model limitations. Autonomous agents are stochastic approximations, meaning fulfilling obligations to the organization requires implementing explainable AI (XAI), continuous post-deployment monitoring, and fail-safe guardrails so automated decisions remain auditable, secure, and accountable.
