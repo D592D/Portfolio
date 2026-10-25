@@ -211,3 +211,43 @@ Approaching a problem as a computer scientist requires decomposing an abstract g
 Building intelligent systems carries dual ethical obligations:
 * **To the End User:** Responsible for protecting user privacy, autonomy, and fairness. Integrating frameworks like **Ethics by Design**, **Responsible Research and Innovation (RRI)**, and **GDPR data minimization** ensures models avoid ingesting unnecessary personal data, guard against hidden demographic bias, and maintain clear human boundaries.
 * **To the Organization:** Responsible for technical transparency, robustness, and honest reporting of model limitations. Autonomous agents are stochastic approximations, meaning fulfilling obligations to the organization requires implementing explainable AI (XAI), continuous post-deployment monitoring, and fail-safe guardrails so automated decisions remain auditable, secure, and accountable.
+
+---
+
+# CS-360 Mobile Architecture and Programming Portfolio: Warehouse Inventory Manager app
+
+## Overview
+This repository contains the completed app code design artifact and launch plan for **Warehouse Inventory Manager** (built upon the Sortly baseline), an offline-resilient mobile asset tracking application developed during CS-360. The work demonstrates comprehensive proficiency in mobile app development best practices, local data persistence, security hardening, user-centered design principles, and commercial release strategies.
+
+---
+
+## Reflection & Project Responses
+
+### 1. Requirements, Goals, and User Needs
+The primary goal of the Warehouse Inventory Manager was to provide a streamlined, offline-resilient mobile asset tracking system designed to eliminate error-prone paper clipboards, manual spreadsheets, and expensive desktop enterprise software. It addresses core organizational pain points for warehouse supervisors, stockroom clerks, and small business owners who need to maintain accurate item counts, locate goods, and update stock statuses in real time. Key requirements included secure role-based authentication with self-registration, an embedded SQLite local database sandbox for reliable offline record-keeping, dynamic two-column card grids for high-speed visual stock auditing, and automated SMS notifications for zero-stock inventory thresholds.
+
+### 2. UI Design and User-Centered Features
+To achieve a fully functional and intuitive user-centered experience, several core screens and features were implemented:
+* **Login Screen (`LoginActivity.java` / `activity_login.xml`)**: Provides secure user authentication and account creation to protect inventory data.
+* **Inventory Dashboard (`InventoryActivity.java` / `activity_inventory.xml`)**: Serves as the central hub, utilizing an adapter-backed list (`InventoryAdapter.java`) and a responsive two-column card layout for fast auditing.
+* **Add Item Screen (`AddItemActivity.java` / `activity_add_item.xml`)**: Features a clean form layout with modal confirmation safeguards against accidental deletions.
+* **SMS Notification Settings Screen (`SmsNotificationActivity.java` / `activity_sms_notification.xml`)**: Manages local recipient phone numbers and configures automated text alerts the moment critical stock reaches zero.
+
+The UI designs prioritized user-centered principles by employing consistent Material Design guidelines, standard Android UI components, clear navigational affordances, one-tap inline quantity increment/decrement buttons, and easily recognizable vector icons (`ic_add.xml`, `ic_delete.xml`, `ic_search.xml`).
+
+### 3. Coding Approach, Techniques, and Future Application
+The coding process followed a structured, modular approach in Android Studio using Java and XML layouts. Key techniques included:
+* **Separation of Concerns**: Database operations were fully isolated within `DatabaseHelper.java`, UI rendering logic was cleanly handled through custom adapters like `InventoryAdapter.java`, and individual activities managed specific user workflows.
+* **Platform Compatibility & Backward Compatibility**: Configured with a minimum SDK of API Level 24 (Android 7.0 Nougat) to support ruggedized handheld scanners and older enterprise tablets, capturing over 97% of active Android devices globally via AndroidX and Material Components libraries.
+* **Dynamic Runtime Permissions**: Implemented runtime checks using `ContextCompat.checkSelfPermission` and `ActivityCompat.requestPermissions` to handle SMS capabilities safely.
+
+These modular coding strategies and compatibility frameworks can be directly applied to future software development projects to ensure cross-device scalability, clean architecture, and robust maintainability.
+
+### 4. Testing, Importance, and Findings
+Testing was conducted iteratively throughout development using both local unit tests (`ExampleUnitTest.kt`) and instrumented Android tests (`ExampleInstrumentedTest.kt`), alongside extensive manual emulator and physical device testing across varied viewports. Rigorous testing is critical in mobile development to catch lifecycle bugs, memory leaks, background execution constraints, and database concurrency errors before deployment. Testing revealed minor UI rendering edge cases on compact phone viewports versus larger tablets and helped fine-tune SQLite database insertion queries to ensure data integrity and smooth 60 frames-per-second rendering during rapid user interactions.
+
+### 5. Innovation and Challenge Resolution
+A notable challenge during development was ensuring smooth, real-time data synchronization between user inputs on the `AddItemActivity` view and the underlying SQLite database (`DatabaseHelper`), while instantly reflecting changes in the inventory list adapter without performance stutter or background thread throttling. To overcome this, custom event handling and lightweight local storage management were implemented alongside `ConstraintLayout` structures and density-independent pixels (`dp`). Furthermore, graceful degradation was built into the SMS notification architecture: if a user denies the `SEND_SMS` permission, the app suppresses text dispatch without crashing and allows uninterrupted inventory management.
+
+### 6. Demonstration of Knowledge, Skills, and Experience
+The architecture and implementation of the **SQLite Database Helper (`DatabaseHelper.java`)**, combined with the platform security and monetization framework outlined in the launch plan, best demonstrated advanced technical competency. Designing a secure local data sandbox adhering to the Principle of Least Privilege, handling CRUD operations cleanly, supporting Wi-Fi-only hardware configurations (`uses-feature android:required="false"`), and integrating a freemium tiered monetization strategy showcased a comprehensive command of professional software engineering, mobile architecture, and product deployment standards.
